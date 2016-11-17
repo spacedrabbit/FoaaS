@@ -28,25 +28,16 @@ class FoaasViewController: UIViewController {
 
   internal func makeRequest() {
     FoaasManager.getFoaas { (foaas: Foaas?) in
+      
       if foaas != nil {
+        self.foaasLabel.alpha = 0.0
         
-        print("about to animate")
-        UIView.animate(withDuration: 0.2, animations: { 
-          self.foaasLabel.alpha = 0.0
-          print("in animation block")
-        }, completion: { (complete: Bool) in
-          if complete {
-              print("Completed")
-//            DispatchQueue.main.async {
-              self.foaasLabel.text = foaas!.description.lowercased()
-//            }
-            
-            UIView.animate(withDuration: 0.15, animations: { 
+        DispatchQueue.main.async {
+          self.foaasLabel.text = foaas!.description.lowercased()
+          UIView.animate(withDuration: 0.25, animations: {
               self.foaasLabel.alpha = 1.0
-            }, completion: nil)
-          }
-        })
-        
+          })
+        }
       }
     }
   }

@@ -15,6 +15,7 @@ internal enum FoaasType {
 }
 
 internal class FoaasManager {
+  
   private static let debugURL = URL(string: "https://www.foaas.com/awesome/louis")!
   
   internal class func getFoaas(url: URL = FoaasManager.debugURL, completion: @escaping (Foaas?)->Void) {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		14DEA7BD1DDE49AD007AEA56 /* FoaasTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DEA7BC1DDE49AD007AEA56 /* FoaasTemplate.swift */; };
 		14EB9F3B1DDAE5C100CC0D29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EB9F3A1DDAE5C100CC0D29 /* AppDelegate.swift */; };
 		14EB9F3D1DDAE5C100CC0D29 /* FoaasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EB9F3C1DDAE5C100CC0D29 /* FoaasViewController.swift */; };
 		14EB9F401DDAE5C100CC0D29 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EB9F3E1DDAE5C100CC0D29 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		14DEA7BC1DDE49AD007AEA56 /* FoaasTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoaasTemplate.swift; sourceTree = "<group>"; };
 		14EB9F371DDAE5C100CC0D29 /* AC3.2-BiteYourThumb.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AC3.2-BiteYourThumb.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		14EB9F3A1DDAE5C100CC0D29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14EB9F3C1DDAE5C100CC0D29 /* FoaasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoaasViewController.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 				14EB9F5B1DDAE6D500CC0D29 /* FoaasManager.swift */,
 				14EB9F5D1DDAE81D00CC0D29 /* FoaasFilter.swift */,
 				14EB9F5F1DDAE8A000CC0D29 /* Foaas.swift */,
+				14DEA7BC1DDE49AD007AEA56 /* FoaasTemplate.swift */,
 				14EB9F5A1DDAE67E00CC0D29 /* Supporting Files */,
 			);
 			path = "AC3.2-BiteYourThumb";
@@ -218,6 +221,7 @@
 			files = (
 				14EB9F5E1DDAE81D00CC0D29 /* FoaasFilter.swift in Sources */,
 				14EB9F3D1DDAE5C100CC0D29 /* FoaasViewController.swift in Sources */,
+				14DEA7BD1DDE49AD007AEA56 /* FoaasTemplate.swift in Sources */,
 				14EB9F3B1DDAE5C100CC0D29 /* AppDelegate.swift in Sources */,
 				14EB9F601DDAE8A000CC0D29 /* Foaas.swift in Sources */,
 				14EB9F5C1DDAE6D500CC0D29 /* FoaasManager.swift in Sources */,
