@@ -25,17 +25,17 @@ internal struct FoaasKey {
 
 internal struct FoaasTemplate {
   let from: String
-  let company: String? = nil
-  let tool: String? = nil
-  let name: String? = nil
-  let doAction: String? = nil
-  let something: String? = nil
-  let thing: String? = nil
-  let behavior: String? = nil
-  let language: String? = nil
-  let reaction: String? = nil
-  let noun: String? = nil
-  let reference: String? = nil
+  let company: String?
+  let tool: String?
+  let name: String?
+  let doAction: String?
+  let something: String?
+  let thing: String?
+  let behavior: String?
+  let language: String?
+  let reaction: String?
+  let noun: String?
+  let reference: String?
 }
 
 extension FoaasTemplate: JSONable {
@@ -46,8 +46,17 @@ extension FoaasTemplate: JSONable {
     }
     
     self.from = jFrom
-    
-    
+    self.company = json[FoaasKey.company] as? String
+    self.tool = json[FoaasKey.tool] as? String
+    self.name = json[FoaasKey.name] as? String
+    self.doAction = json[FoaasKey.doAction] as? String
+    self.something = json[FoaasKey.something] as? String
+    self.thing = json[FoaasKey.thing] as? String
+    self.behavior = json[FoaasKey.behavior] as? String
+    self.language = json[FoaasKey.language] as? String
+    self.reaction = json[FoaasKey.reaction] as? String
+    self.noun = json[FoaasKey.noun] as? String
+    self.reference = json[FoaasKey.reference] as? String
   }
   
   func toJson() -> [String : AnyObject] {

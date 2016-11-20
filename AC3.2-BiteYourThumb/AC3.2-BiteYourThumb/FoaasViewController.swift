@@ -20,14 +20,40 @@ class FoaasViewController: UIViewController {
     
     self.makeRequest()
   }
+  
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    self.checkBoundingRect()
+  }
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
   }
+  
+  internal func checkBoundingRect() {
+    let screenBounds = UIScreen.main.bounds
+    self.foaasLabel.sizeToFit()
+
+    let labelLayerBounds = self.foaasLabel.layer.bounds
+    
+    let rect = self.foaasLabel.attributedText?.boundingRect(with: CGSize(width: screenBounds.width - 32, height: screenBounds.height), options: .usesLineFragmentOrigin, context: nil)
+    
+    if Float(labelLayerBounds.size.height) > roundf(Float(rect!.size.height)){
+      let fontSize = self.foaasLabel.font.pointSize
+      let lineSize = self.foaasLabel.font.lineHeight
+      let fontScaleDiff = (lineSize - fontSize) / fontSize
+      let sizeScaleDiff = screenBounds.size.height / labelLayerBounds.size.height
+      
+      
+      self.foaasLabel.font = self.foaasLabel.font.withSize((fontSize * (1 - CGFloat(fontScaleDiff))) * (1 - sizeScaleDiff))
+    }
+    
+    self.foaasLabel.frame.size = rect!.size
+  }
 
   internal func makeRequest() {
-    FoaasManager.getFoaas { (foaas: Foaas?) in
+    FoaasAPIManager.getFoaas { (foaas: Foaas?) in
       
       if foaas != nil {
         self.foaasLabel.alpha = 0.0
