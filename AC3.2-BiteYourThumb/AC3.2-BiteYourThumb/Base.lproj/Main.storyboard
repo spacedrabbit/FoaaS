@@ -22,12 +22,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mmp-rl-6kV">
-                                <rect key="frame" x="16" y="28" width="0.0" height="571"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="60"/>
-                                <color key="textColor" red="0.51030113600000004" green="0.60624663509999999" blue="0.64673998720000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WNJ-nA-IHu">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="599"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mmp-rl-6kV">
+                                        <rect key="frame" x="16" y="16" width="359" height="0.0"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="60"/>
+                                        <color key="textColor" red="0.51030113600000004" green="0.60624663509999999" blue="0.64673998720000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottomMargin" secondItem="Mmp-rl-6kV" secondAttribute="bottom" constant="8" id="05d-tV-2g6"/>
+                                    <constraint firstItem="Mmp-rl-6kV" firstAttribute="top" secondItem="WNJ-nA-IHu" secondAttribute="topMargin" constant="8" id="Bpq-8h-Waf"/>
+                                    <constraint firstItem="Mmp-rl-6kV" firstAttribute="leading" secondItem="WNJ-nA-IHu" secondAttribute="leadingMargin" constant="8" id="To2-qr-dQk"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="Mmp-rl-6kV" secondAttribute="trailing" constant="8" id="oQQ-xM-pot"/>
+                                </constraints>
+                            </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="la6-s5-HXc">
                                 <rect key="frame" x="158" y="599" width="60" height="60"/>
                                 <constraints>
@@ -43,15 +54,17 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="bottomMargin" secondItem="la6-s5-HXc" secondAttribute="bottom" constant="8" id="Ahf-pB-4nG"/>
+                            <constraint firstItem="WNJ-nA-IHu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Anj-Se-yCb"/>
                             <constraint firstItem="la6-s5-HXc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="DMK-8h-0rm"/>
-                            <constraint firstItem="Mmp-rl-6kV" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="P3G-Sn-CBc"/>
-                            <constraint firstItem="Mmp-rl-6kV" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="acU-5J-IBO"/>
-                            <constraint firstItem="Mmp-rl-6kV" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="dgv-oT-bQd"/>
-                            <constraint firstItem="Mmp-rl-6kV" firstAttribute="bottom" secondItem="la6-s5-HXc" secondAttribute="top" id="iiD-46-PEZ"/>
+                            <constraint firstItem="WNJ-nA-IHu" firstAttribute="bottom" secondItem="la6-s5-HXc" secondAttribute="top" id="Ejb-BT-MUg"/>
+                            <constraint firstItem="WNJ-nA-IHu" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="IF1-MG-B78"/>
+                            <constraint firstItem="Mmp-rl-6kV" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" constant="-16" id="l2l-Bv-m6d"/>
+                            <constraint firstItem="WNJ-nA-IHu" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="rrO-Oy-3ry"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="foaasLabel" destination="Mmp-rl-6kV" id="biU-Lf-oBX"/>
+                        <outlet property="foaasMessageScrollView" destination="WNJ-nA-IHu" id="QKW-ra-gRu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+internal class FoaasFilter {
+  // TODO: This will filter profanity, replacing the first occurance of a vowel with an '*'
+}

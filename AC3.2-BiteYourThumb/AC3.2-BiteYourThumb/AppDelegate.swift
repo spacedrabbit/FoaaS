@@ -20,14 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       FoaasAPIManager.getOperations { (operations: [FoaasOperation]?) in
         if operations != nil {
           FoaasDataManager.shared.save(operations: operations!)
-          
-//          for op in operations! {
-//            let data = op.asData()
-//            print("data: \(data)")
-//            
-//            let fromData = FoaasOperation(data: data!)
-//            print("from data: \(fromData)")
-//          }
         }
       }
     }

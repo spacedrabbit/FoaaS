@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal struct FoaasField: JSONable, CustomStringConvertible {
+internal struct FoaasField: JSONConvertible, CustomStringConvertible {
   let name: String
   let field: String
   
@@ -34,7 +34,7 @@ internal struct FoaasField: JSONable, CustomStringConvertible {
   }
 }
 
-internal struct FoaasOperation: JSONable {
+internal struct FoaasOperation: JSONConvertible, DataConvertible {
   let name: String
   let url: String
   let fields: [FoaasField]
@@ -76,15 +76,8 @@ internal struct FoaasOperation: JSONable {
     self = operation
   }
   
-  func asData() -> Data? {
-    do {
-      return try JSONSerialization.data(withJSONObject: self.toJson(), options: [])
-    }
-    catch {
-      print("Error converting to data: \(error)")
-    }
-    
-    return nil
+  func toData() throws -> Data {
+    return try JSONSerialization.data(withJSONObject: self.toJson(), options: [])
   }
 
 }

@@ -8,12 +8,7 @@
 
 import Foundation
 
-protocol JSONable {
-  init?(json: [String : AnyObject])
-  func toJson() -> [String : AnyObject]
-}
-
-internal struct Foaas: JSONable, CustomStringConvertible {
+internal struct Foaas: JSONConvertible, CustomStringConvertible {
   
   let message: String
   let subtitle: String

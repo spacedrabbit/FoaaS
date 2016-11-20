@@ -38,7 +38,7 @@ internal struct FoaasTemplate {
   let reference: String?
 }
 
-extension FoaasTemplate: JSONable {
+extension FoaasTemplate: JSONConvertible {
   init?(json: [String : AnyObject]) {
     
     guard let jFrom = json[FoaasKey.from] as? String else {

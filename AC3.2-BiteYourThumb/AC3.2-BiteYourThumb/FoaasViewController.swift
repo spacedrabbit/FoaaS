@@ -11,6 +11,7 @@ import UIKit
 class FoaasViewController: UIViewController {
 
   @IBOutlet weak var foaasLabel: UILabel!
+  @IBOutlet weak var foaasMessageScrollView: UIScrollView!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -18,12 +19,13 @@ class FoaasViewController: UIViewController {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(makeRequest))
     self.view.addGestureRecognizer(tapGesture)
     
+    
     self.makeRequest()
   }
   
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    self.checkBoundingRect()
+//    self.checkBoundingRect()
   }
 
   override func didReceiveMemoryWarning() {
