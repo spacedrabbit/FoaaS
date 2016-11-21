@@ -16,10 +16,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
+    FoaasDataManager.shared.deleteStoredOperations()
     if !FoaasDataManager.shared.load() {
       FoaasAPIManager.getOperations { (operations: [FoaasOperation]?) in
         if operations != nil {
           FoaasDataManager.shared.save(operations: operations!)
+          
+          FoaasBuilder(operation: operations!.first!)
         }
       }
     }

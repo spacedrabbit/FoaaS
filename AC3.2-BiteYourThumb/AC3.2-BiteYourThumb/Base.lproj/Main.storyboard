@@ -26,8 +26,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="599"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="28" translatesAutoresizingMaskIntoConstraints="NO" id="Mmp-rl-6kV">
-                                        <rect key="frame" x="16" y="16" width="359" height="0.0"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="60"/>
+                                        <rect key="frame" x="8" y="16" width="359" height="0.0"/>
+                                        <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="32"/>
                                         <color key="textColor" red="0.51030113600000004" green="0.60624663509999999" blue="0.64673998720000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -35,8 +35,8 @@
                                 <constraints>
                                     <constraint firstAttribute="bottomMargin" secondItem="Mmp-rl-6kV" secondAttribute="bottom" constant="8" id="05d-tV-2g6"/>
                                     <constraint firstItem="Mmp-rl-6kV" firstAttribute="top" secondItem="WNJ-nA-IHu" secondAttribute="topMargin" constant="8" id="Bpq-8h-Waf"/>
-                                    <constraint firstItem="Mmp-rl-6kV" firstAttribute="leading" secondItem="WNJ-nA-IHu" secondAttribute="leadingMargin" constant="8" id="To2-qr-dQk"/>
-                                    <constraint firstAttribute="trailingMargin" secondItem="Mmp-rl-6kV" secondAttribute="trailing" constant="8" id="oQQ-xM-pot"/>
+                                    <constraint firstItem="Mmp-rl-6kV" firstAttribute="leading" secondItem="WNJ-nA-IHu" secondAttribute="leadingMargin" id="To2-qr-dQk"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="Mmp-rl-6kV" secondAttribute="trailing" id="oQQ-xM-pot"/>
                                 </constraints>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="la6-s5-HXc">
@@ -45,9 +45,9 @@
                                     <constraint firstAttribute="height" constant="60" id="30g-Zi-BY1"/>
                                     <constraint firstAttribute="width" constant="60" id="VJQ-Lg-U9Z"/>
                                 </constraints>
-                                <state key="normal" image="Octopus"/>
+                                <state key="normal" image="Octopus-Cute"/>
                                 <connections>
-                                    <segue destination="Kih-kC-ayv" kind="presentation" identifier="FoaasOperationsSegue" modalTransitionStyle="flipHorizontal" id="nsK-KT-KIx"/>
+                                    <segue destination="Kih-kC-ayv" kind="showDetail" identifier="FoaasOperationsSegue" id="nsK-KT-KIx"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -84,11 +84,11 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="70e-eN-ltQ" id="fIA-FC-Vjt">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="pzO-d6-qB5">
-                                            <rect key="frame" x="15" y="0.0" width="345" height="43"/>
+                                            <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
                                             <nil key="textColor"/>
@@ -131,6 +131,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Octopus" width="198" height="198"/>
+        <image name="Octopus-Cute" width="198" height="198"/>
     </resources>
 </document>

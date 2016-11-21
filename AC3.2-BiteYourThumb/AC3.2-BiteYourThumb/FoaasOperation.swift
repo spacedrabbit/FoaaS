@@ -8,6 +8,17 @@
 
 import Foundation
 
+internal class FoaasBuilder {
+  
+  internal init(operation: FoaasOperation) {
+    
+    let components: [String] = URL(string: operation.url)!.pathComponents
+    let fields = operation.fields
+    
+  }
+  
+}
+
 internal struct FoaasField: JSONConvertible, CustomStringConvertible {
   let name: String
   let field: String
@@ -39,6 +50,7 @@ internal struct FoaasOperation: JSONConvertible, DataConvertible {
   let url: String
   let fields: [FoaasField]
   
+  // MARK: - JSONConvertible
   init?(json: [String : AnyObject]) {
     guard
       let jName = json["name"] as? String,
@@ -65,6 +77,7 @@ internal struct FoaasOperation: JSONConvertible, DataConvertible {
     ]
   }
   
+  // MARK: - Data Convertible
   init?(data: Data) {
     guard
       let json = try? JSONSerialization.jsonObject(with: data, options: []),
