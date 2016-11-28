@@ -8,42 +8,17 @@
 
 import Foundation
 
-internal class FoaasBuilder {
-  
-  internal init(operation: FoaasOperation) {
-    
-    let components: [String] = URL(string: operation.url)!.pathComponents
-    let fields = operation.fields
-    
-  }
-  
-}
+//internal class FoaasBuilder {
+//  
+//  internal init(operation: FoaasOperation) {
+//    
+//    let components: [String] = URL(string: operation.url)!.pathComponents
+//    let fields = operation.fields
+//    
+//  }
+//  
+//}
 
-internal struct FoaasField: JSONConvertible, CustomStringConvertible {
-  let name: String
-  let field: String
-  
-  var description: String {
-    return "Name: \(name)   Field: \(field)"
-  }
-  
-  init?(json: [String : AnyObject]) {
-    guard
-      let jName = json["name"] as? String,
-      let jField = json["field"] as? String
-    else { return nil }
-    
-    self.name = jName
-    self.field = jField
-  }
-  
-  func toJson() -> [String : AnyObject] {
-    return [
-      "name" : name as AnyObject,
-      "field" : field as AnyObject
-    ]
-  }
-}
 
 internal struct FoaasOperation: JSONConvertible, DataConvertible {
   let name: String

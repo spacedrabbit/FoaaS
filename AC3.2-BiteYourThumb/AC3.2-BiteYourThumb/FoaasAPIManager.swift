@@ -8,10 +8,9 @@
 
 import Foundation
 
-internal enum FoaasType {
-  case awesome(from: String)
-  case bag(from: String)
-  case bye(from: String)
+protocol FoaasAPIManagerDelegate: class {
+  func didFinishOperationsRequest(data: Data)
+  func didFinishFoaasRequest(data: Data)
 }
 
 internal class FoaasAPIManager {
@@ -23,6 +22,7 @@ internal class FoaasAPIManager {
   private static let operationsURL = URL(string: "https://www.foaas.com/operations")!
   
   private static let defaultSession = URLSession(configuration: .default)
+  internal private(set) weak static var delegate: FoaasAPIManagerDelegate?
   
   internal class func getFoaas(url: URL = FoaasAPIManager.extendedTwoDebugURL, completion: @escaping (Foaas?)->Void) {
     
@@ -32,6 +32,8 @@ internal class FoaasAPIManager {
 
     defaultSession.dataTask(with: request, completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
       print("Session returning data")
+      
+      
       
       if error != nil {
         print("Error encountered: \(error!)")
@@ -91,12 +93,12 @@ internal class FoaasAPIManager {
   
       }
     }).resume()
-  
    
   }
   
-  
-  
+  internal class func assignDelegate(_ delegate: FoaasAPIManagerDelegate) {
+    self.delegate = delegate
+  }
   
   
 

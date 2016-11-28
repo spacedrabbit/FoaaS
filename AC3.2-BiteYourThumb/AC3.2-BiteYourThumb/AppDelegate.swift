@@ -15,14 +15,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+
     
-    FoaasDataManager.shared.deleteStoredOperations()
-    if !FoaasDataManager.shared.load() {
-      FoaasAPIManager.getOperations { (operations: [FoaasOperation]?) in
-        if operations != nil {
-          FoaasDataManager.shared.save(operations: operations!)
-          
-          FoaasBuilder(operation: operations!.first!)
+    FoaasDataManager.shared.requestOperations { (operations: [FoaasOperation]?) in
+      if operations != nil {
+        print("Loaded operations")
+        
+        for op in operations! {
+          let builder = FoaasBuilder(operation: op)
+
+          do {
+            try builder.update(key: "from", value: "From Cat")
+            print(builder.build())
+          }
+          catch {
+            print("Op: \(op)")
+            print("Error Encountered: \(error)")
+          }
         }
       }
     }

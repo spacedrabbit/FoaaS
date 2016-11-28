@@ -15,6 +15,16 @@ class FoaasOperationsTableViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    self.title = "Operations"
+    
+    if let foaasNavVC = self.navigationController as? FoaasNavigationController {
+      foaasNavVC.adjustRightBar(to: .done)
+    }
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
   }
   
   override func didReceiveMemoryWarning() {
@@ -38,6 +48,19 @@ class FoaasOperationsTableViewController: UITableViewController {
     cell.textLabel?.text = operations?[indexPath.row].name
     
     return cell
+  }
+  
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    guard
+      let identifier = segue.identifier,
+      identifier == "FoaasPreviewSegue",
+      segue.destination is FoaasPreviewTableViewController,
+      let senderCell = sender as? UITableViewCell,
+      let cellIndex = self.tableView.indexPath(for: senderCell) else {
+        return
+    }
+    
+    (segue.destination as! FoaasPreviewTableViewController).operation = self.operations?[cellIndex.row]
   }
   
 }

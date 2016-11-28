@@ -13,10 +13,35 @@ internal class FoaasDataManager {
   private static let defaults = UserDefaults.standard
   internal private(set) var operations: [FoaasOperation]?
   
+  // MARK: Singleton
   internal static let shared: FoaasDataManager = FoaasDataManager()
-  private init () { }
+  private init () {
+  }
   
-  internal func save(operations: [FoaasOperation]) {
+  internal func requestOperations(_ operations: @escaping ([FoaasOperation]?)->Void) {
+    
+    if self.load() {
+      operations(self.operations!)
+      return
+    }
+    
+    FoaasAPIManager.getOperations { (apiOperations: [FoaasOperation]?) in
+      operations(apiOperations)
+      
+      guard apiOperations != nil else {
+        return
+      }
+      self.save(operations: apiOperations!)
+    }
+  }
+  
+  
+  internal class func requestPreview(for operation: FoaasOperation, completion: @escaping (Foaas?)->Void ) {
+    
+  }
+  
+  // MARK: - Save/Load
+  private func save(operations: [FoaasOperation]) {
     self.operations = operations
     let opsData = operations.flatMap{ try? $0.toData() }
     
@@ -24,7 +49,7 @@ internal class FoaasDataManager {
     FoaasDataManager.defaults.set(opsData, forKey: FoaasDataManager.operationsKey)
   }
   
-  internal func load() -> Bool {
+  private func load() -> Bool {
     guard
       let opsData = FoaasDataManager.defaults.object(forKey: FoaasDataManager.operationsKey) as? [Data]
     else { return false }
@@ -34,6 +59,7 @@ internal class FoaasDataManager {
     return true
   }
   
+  // MARK: - Delete
   internal func deleteStoredOperations() {
     guard self.load() else {
       return

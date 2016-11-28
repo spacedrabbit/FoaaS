@@ -23,6 +23,15 @@ class FoaasViewController: UIViewController {
     self.makeRequest()
   }
   
+  internal func registerForNotifications() {
+    let notificationCenter = NotificationCenter.default
+    notificationCenter.addObserver(self, selector: #selector(updateFoaas(sender:)), name: Notification.Name(rawValue: "FoaasObjectDidUpdate"), object: nil)
+  }
+  
+  internal func updateFoaas(sender: Any) {
+    
+  }
+  
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
 //    self.checkBoundingRect()
@@ -30,9 +39,10 @@ class FoaasViewController: UIViewController {
 
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
   }
   
+  
+  // TODO: this isn't functioning as I want. Will need re-visiting in a later sprint.
   internal func checkBoundingRect() {
     let screenBounds = UIScreen.main.bounds
     self.foaasLabel.sizeToFit()

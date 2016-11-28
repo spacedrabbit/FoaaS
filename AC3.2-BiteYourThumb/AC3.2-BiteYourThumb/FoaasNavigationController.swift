@@ -8,14 +8,38 @@
 
 import UIKit
 
+enum FoaasNavItem {
+  case done, cancel
+}
+
 class FoaasNavigationController: UINavigationController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+  
+  private var rightBarItem: UIBarButtonItem?
+  private var leftBarItem: UIBarButtonItem?
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+  }
+  
+  override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+  }
+  
+  internal func adjustRightBar(to item: FoaasNavItem) {
+    switch item {
+    case .done, .cancel:
+      if let topVC = self.topViewController {
+        topVC.navigationItem.setRightBarButton(self.dismissButton(with: "Done"), animated: true)
+      }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
+    
+  }
+  
+  internal func dismissButton(with text: String) -> UIBarButtonItem {
+    return UIBarButtonItem(title: text, style: .done, target: self, action: #selector(dismissFoaas))
+  }
+  
+  internal func dismissFoaas() {
+    self.dismiss(animated: true, completion: nil)
+  }
 }
