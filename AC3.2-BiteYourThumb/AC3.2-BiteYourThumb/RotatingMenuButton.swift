@@ -16,10 +16,29 @@ class RotatingMenuButton: UIView {
     
     self.setupViewHierarchy()
     self.configureConstraints()
+    
+    let tapGes = UITapGestureRecognizer(target: self, action: #selector(rotateOpen))
+    self.addGestureRecognizer(tapGes)
   }
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+  }
+  
+  internal func rotateOpen() {
+    
+    var rotateAffine: CGAffineTransform
+    if self.transform.isIdentity {
+      rotateAffine = CGAffineTransform(rotationAngle: CGFloat.pi)
+    }
+    else {
+      rotateAffine = CGAffineTransform.identity
+    }
+    
+    UIView.animate(withDuration: 0.40, animations: {
+     self.transform = rotateAffine
+    })
+    
   }
   
   // MARK: Setup
