@@ -47,6 +47,7 @@
                                 </constraints>
                                 <state key="normal" image="Octopus-Cute"/>
                                 <connections>
+                                    <action selector="didTapOctoButton:" destination="BYZ-38-t0r" eventType="touchDown" id="P6B-ma-hV8"/>
                                     <segue destination="Kih-kC-ayv" kind="show" identifier="FoaasOperationsSegue" id="nsK-KT-KIx"/>
                                 </connections>
                             </button>

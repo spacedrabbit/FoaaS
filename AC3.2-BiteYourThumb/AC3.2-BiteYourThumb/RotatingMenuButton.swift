@@ -14,6 +14,18 @@ class MenuView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
+    
+    let label = UILabel()
+    label.text = "Hi"
+    label.numberOfLines = 1
+    label.font = UIFont.systemFont(ofSize: 18.0)
+    label.textColor = UIColor.black
+    label.translatesAutoresizingMaskIntoConstraints = false
+    
+    self.addSubview(label)
+    
+    label.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+    label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -22,7 +34,7 @@ class MenuView: UIView {
 }
 
 class RotatingMenuButton: UIView {
-  private let rotationDuration: TimeInterval = 0.75
+  private let rotationDuration: TimeInterval = 1.30
   
   // MARK: Initialization
   override init(frame: CGRect) {
@@ -56,9 +68,18 @@ class RotatingMenuButton: UIView {
     }, completion: { (complete) in
     })
     
-    for view in (self.stackView.arrangedSubviews as! [MenuView]).reversed() {
-      self.animateMenu(adding: view)
-    }
+//    for view in (self.stackView.arrangedSubviews as! [MenuView]).reversed() {
+//      self.animateMenu(adding: view)
+//    }
+    
+    UIView.animate(withDuration: 0.3, animations: {
+      self.stackView.arrangedSubviews.forEach { (view) in
+        (view as! MenuView).heightConstraint.isActive = true
+        (view as! MenuView).widthConstraint.isActive = true
+        
+        view.isHidden = !view.isHidden
+      }
+    })
   }
   
   var viewCounter = 0
@@ -66,12 +87,18 @@ class RotatingMenuButton: UIView {
     
     let viewAnimationDuration = self.rotationDuration / 3.0
     let viewAnimationDelay = viewAnimationDuration * Double(viewCounter)
-    UIView.animate(withDuration: viewAnimationDuration, delay: viewAnimationDelay, options: [], animations: {
-      view.isHidden = false
+    
+    UIView.animate(withDuration: viewAnimationDuration, delay: viewAnimationDelay, options: UIViewAnimationOptions.curveEaseInOut, animations: {
       view.backgroundColor = UIColor.red
+      view.isHidden = false
       view.heightConstraint.isActive = true
       view.widthConstraint.isActive = true
     }, completion: nil)
+//    
+//    
+//    UIView.animate(withDuration: viewAnimationDuration, delay: viewAnimationDelay, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.8, options: [], animations: {
+//
+//    }, completion: nil)
     
     viewCounter += 1
   }

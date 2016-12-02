@@ -13,13 +13,54 @@ class FoaasViewController: UIViewController {
   @IBOutlet weak var foaasLabel: UILabel!
   @IBOutlet weak var foaasMessageScrollView: UIScrollView!
   
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
-//    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(makeRequest))
-//    self.view.addGestureRecognizer(tapGesture)
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(createScreenShot))
+    self.view.addGestureRecognizer(tapGesture)
     
     self.makeRequest()
+  }
+  
+  internal func createScreenShot() {
+    UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, false, UIScreen.main.scale)
+    self.view.layer.render(in: UIGraphicsGetCurrentContext()!)
+    let image = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext()
+    
+    UIImageWriteToSavedPhotosAlbum(image!, self, #selector(createScreenShotCompletion(image:didFinishSavingWithError:contextInfo:)), nil)
+  }
+  
+  @IBAction func didTapOctoButton(_ sender: UIButton) {
+    let newTransform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+    let originalTransform = sender.imageView!.transform
+    
+    UIView.animate(withDuration: 0.1, animations: {
+      sender.layer.transform = CATransform3DMakeAffineTransform(newTransform)
+    }, completion: { (complete) in
+      sender.layer.transform = CATransform3DMakeAffineTransform(originalTransform)
+    })
+  }
+  
+  internal func createScreenShotCompletion(image: UIImage, didFinishSavingWithError: NSError?, contextInfo: UnsafeMutableRawPointer?) {
+    if didFinishSavingWithError != nil {
+      print("Error encountered with saving image: \(didFinishSavingWithError!)")
+      
+      let failAlert = UIAlertController(title: "Image Not Saved", message: didFinishSavingWithError!.description, preferredStyle: .alert)
+      let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+      failAlert.addAction(okAction)
+      
+      self.present(failAlert, animated: true, completion: nil)
+    }
+    else {
+      let successAlert = UIAlertController(title: "Image Saved", message: nil, preferredStyle: .alert)
+      let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+      successAlert.addAction(okAction)
+      
+      self.present(successAlert, animated: true, completion: nil)
+    }
+    
   }
   
   override func viewWillAppear(_ animated: Bool) {
