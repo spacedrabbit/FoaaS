@@ -8,7 +8,21 @@
 
 import UIKit
 
+class MenuView: UIView {
+  var widthConstraint: NSLayoutConstraint!
+  var heightConstraint: NSLayoutConstraint!
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+  }
+}
+
 class RotatingMenuButton: UIView {
+  private let rotationDuration: TimeInterval = 0.75
   
   // MARK: Initialization
   override init(frame: CGRect) {
@@ -19,6 +33,8 @@ class RotatingMenuButton: UIView {
     
     let tapGes = UITapGestureRecognizer(target: self, action: #selector(rotateOpen))
     self.addGestureRecognizer(tapGes)
+    
+    self.setupStackSubviews()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -28,17 +44,36 @@ class RotatingMenuButton: UIView {
   internal func rotateOpen() {
     
     var rotateAffine: CGAffineTransform
-    if self.transform.isIdentity {
+    if self.imageOverlay.transform.isIdentity {
       rotateAffine = CGAffineTransform(rotationAngle: CGFloat.pi)
     }
     else {
       rotateAffine = CGAffineTransform.identity
     }
     
-    UIView.animate(withDuration: 0.40, animations: {
-     self.transform = rotateAffine
+    UIView.animate(withDuration: self.rotationDuration, animations: {
+      self.imageOverlay.transform = rotateAffine
+    }, completion: { (complete) in
     })
     
+    for view in (self.stackView.arrangedSubviews as! [MenuView]).reversed() {
+      self.animateMenu(adding: view)
+    }
+  }
+  
+  var viewCounter = 0
+  internal func animateMenu(adding view: MenuView) {
+    
+    let viewAnimationDuration = self.rotationDuration / 3.0
+    let viewAnimationDelay = viewAnimationDuration * Double(viewCounter)
+    UIView.animate(withDuration: viewAnimationDuration, delay: viewAnimationDelay, options: [], animations: {
+      view.isHidden = false
+      view.backgroundColor = UIColor.red
+      view.heightConstraint.isActive = true
+      view.widthConstraint.isActive = true
+    }, completion: nil)
+    
+    viewCounter += 1
   }
   
   // MARK: Setup
@@ -68,35 +103,26 @@ class RotatingMenuButton: UIView {
     stackView.bottomAnchor.constraint(equalTo: imageOverlay.centerYAnchor).isActive = true
     stackView.centerXAnchor.constraint(equalTo: margins.centerXAnchor).isActive = true
     
-    let viewArray: [UIView] = [
-      UIView(frame: CGRect.zero),
-      UIView(frame: CGRect.zero),
-      UIView(frame: CGRect.zero),
-    ]
+  }
+  
+  private func setupStackSubviews() {
+    let viewArray: [MenuView] = [
+      MenuView(frame: CGRect.zero),
+      MenuView(frame: CGRect.zero),
+      MenuView(frame: CGRect.zero),
+      ]
     
-    viewArray.forEach { (view) in
-      
+    for view in viewArray {
+      view.translatesAutoresizingMaskIntoConstraints = false
       self.stackView.addArrangedSubview(view)
-      view.widthAnchor.constraint(equalTo: self.stackView.widthAnchor).isActive = true
-      view.heightAnchor.constraint(equalToConstant: 80.0).isActive = true
-      view.alpha = 0.0
-      view.backgroundColor = UIColor.red
-    }
-
-  }
-  
-  internal func animateIn() {
-
-    UIView.animate(withDuration: 2.25, delay: 0.0, usingSpringWithDamping: 0.4, initialSpringVelocity: 0.8, options: [], animations: {
       
-      for view in self.stackView.arrangedSubviews {
-        view.alpha = 1.0
-      }
+      view.widthConstraint = view.widthAnchor.constraint(equalTo: self.stackView.widthAnchor)
+      view.heightConstraint = view.heightAnchor.constraint(equalToConstant: 80.0)
+      
+      view.widthConstraint.isActive = false
+      view.heightConstraint.isActive = false
     }
-      , completion: nil)
-    
   }
-  
   
   // MARK: Lazy Vars
   internal lazy var imageOverlay: UIImageView = {
@@ -112,7 +138,7 @@ class RotatingMenuButton: UIView {
     stackView.axis = .vertical
     stackView.alignment = UIStackViewAlignment.fill
     stackView.distribution = UIStackViewDistribution.fillEqually
-
+    
     return stackView
   }()
   

@@ -31,9 +31,6 @@ class FoaasViewController: UIViewController {
     let centerConstraintsY = NSLayoutConstraint(item: newButton, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1.0, constant: 0.0)
     
     self.view.addConstraints([centerConstraintsX, centerConstraintsY])
-    
-//    self.view.layoutIfNeeded()
-    newButton.animateIn()
   }
   
   internal func registerForNotifications() {
