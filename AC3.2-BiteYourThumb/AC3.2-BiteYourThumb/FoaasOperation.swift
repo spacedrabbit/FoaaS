@@ -8,18 +8,6 @@
 
 import Foundation
 
-//internal class FoaasBuilder {
-//  
-//  internal init(operation: FoaasOperation) {
-//    
-//    let components: [String] = URL(string: operation.url)!.pathComponents
-//    let fields = operation.fields
-//    
-//  }
-//  
-//}
-
-
 internal struct FoaasOperation: JSONConvertible, DataConvertible {
   let name: String
   let url: String

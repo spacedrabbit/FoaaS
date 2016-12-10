@@ -16,6 +16,8 @@ class FoaasPrevewViewController: UIViewController {
   @IBOutlet weak var bottomTextFieldConstraint: NSLayoutConstraint!
   @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
   
+  
+  // MARK: - View Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -23,14 +25,14 @@ class FoaasPrevewViewController: UIViewController {
     self.setupViewHeirarchy()
     self.configureConstraints()
     
-    self.scrollView.alwaysBounceVertical = true
-    
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidAppear(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-    
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    self.registerForNotifications()
   }
   
+  
+  // MARK: - View Setup
   internal func setupViewHeirarchy() {
+    self.scrollView.alwaysBounceVertical = true
+    
     nameLabel.translatesAutoresizingMaskIntoConstraints = false
     nameTextField.translatesAutoresizingMaskIntoConstraints = false
     fromLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +55,6 @@ class FoaasPrevewViewController: UIViewController {
     nameTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8.0).isActive = true
     nameTextField.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor).isActive = true
     
-    //
     fromLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 8.0).isActive = true
     fromLabel.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor).isActive = true
     
@@ -70,40 +71,47 @@ class FoaasPrevewViewController: UIViewController {
 
   }
   
+  
+  // MARK: - Keyboard Notification
+  private func registerForNotifications() {
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidAppear(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+  }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+  
   internal func keyboardDidAppear(notification: Notification) {
-    if let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect,
-      let animationNumber = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber,
-      let animationDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval {
-        let animationOption = UIViewAnimationOptions(rawValue: animationNumber.uintValue)
-      
-      scrollViewBottomConstraint.constant = keyboardFrame.size.height
-      UIView.animate(withDuration: animationDuration, delay: 0.0, options: animationOption, animations: {
-        self.view.layoutIfNeeded()
-      
-      }, completion: nil)
-      
-    }
+    self.shouldShowKeyboard(show: true, notification: notification, completion: nil)
   }
   
   internal func keyboardWillDisappear(notification: Notification) {
+    self.shouldShowKeyboard(show: false, notification: notification, completion: nil)
+  }
+  
+  private func shouldShowKeyboard(show: Bool, notification: Notification, completion: ((Bool) -> Void)? ) {
     if let keyboardFrame = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? CGRect,
       let animationNumber = notification.userInfo?[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber,
       let animationDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? TimeInterval {
       let animationOption = UIViewAnimationOptions(rawValue: animationNumber.uintValue)
       
-      scrollViewBottomConstraint.constant = -keyboardFrame.size.height
+      scrollViewBottomConstraint.constant = keyboardFrame.size.height * (show ? 1 : -1)
       UIView.animate(withDuration: animationDuration, delay: 0.0, options: animationOption, animations: {
         self.view.layoutIfNeeded()
-        
-      }, completion: nil)
+      }, completion: completion)
       
-    }  }
+    }
+  }
   
+  
+  // MARK: - Actions
   @IBAction func didPressDone(_ sender: UIBarButtonItem) {
     self.dismiss(animated: true, completion: nil)
   }
   
-  // MARK - Lazy Loaders
+  // MARK: - Lazy Loaders
   internal lazy var nameLabel: UILabel = {
     let label = UILabel()
     label.text = "Name"

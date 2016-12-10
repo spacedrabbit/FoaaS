@@ -63,17 +63,6 @@ class FoaasViewController: UIViewController {
     
   }
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    let newButton = RotatingMenuButton(frame: CGRect.init(origin: self.view.center, size: CGSize.zero))
-    self.view.addSubview(newButton)
-    
-    let centerConstraintsX = NSLayoutConstraint(item: newButton, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1.0, constant: 0.0)
-    let centerConstraintsY = NSLayoutConstraint(item: newButton, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1.0, constant: 0.0)
-    
-    self.view.addConstraints([centerConstraintsX, centerConstraintsY])
-  }
-  
   internal func registerForNotifications() {
     let notificationCenter = NotificationCenter.default
     notificationCenter.addObserver(self, selector: #selector(updateFoaas(sender:)), name: Notification.Name(rawValue: "FoaasObjectDidUpdate"), object: nil)
