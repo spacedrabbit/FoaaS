@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		144732221DE35599002EF07E /* FoaasField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144732211DE35599002EF07E /* FoaasField.swift */; };
+		14751D841DFBAC6800B93993 /* FoaasPrevewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14751D831DFBAC6800B93993 /* FoaasPrevewViewController.swift */; };
 		148991441DEA751100ACF4C1 /* FoaasPreviewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148991431DEA751100ACF4C1 /* FoaasPreviewTableViewController.swift */; };
 		148991461DEA76EC00ACF4C1 /* FoaasPreviewTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148991451DEA76EC00ACF4C1 /* FoaasPreviewTextTableViewCell.swift */; };
 		148991481DEA770800ACF4C1 /* FoaasFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148991471DEA770800ACF4C1 /* FoaasFieldTableViewCell.swift */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		144732211DE35599002EF07E /* FoaasField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoaasField.swift; sourceTree = "<group>"; };
+		14751D831DFBAC6800B93993 /* FoaasPrevewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoaasPrevewViewController.swift; sourceTree = "<group>"; };
 		148991431DEA751100ACF4C1 /* FoaasPreviewTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoaasPreviewTableViewController.swift; sourceTree = "<group>"; };
 		148991451DEA76EC00ACF4C1 /* FoaasPreviewTextTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoaasPreviewTextTableViewCell.swift; sourceTree = "<group>"; };
 		148991471DEA770800ACF4C1 /* FoaasFieldTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoaasFieldTableViewCell.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 		14DEA7C61DE22E38007AEA56 /* View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				14751D831DFBAC6800B93993 /* FoaasPrevewViewController.swift */,
 				14DEA7CB1DE254B8007AEA56 /* FoaasNavigationController.swift */,
 				14EB9F3C1DDAE5C100CC0D29 /* FoaasViewController.swift */,
 				14DEA7C91DE25462007AEA56 /* FoaasOperationsTableViewController.swift */,
@@ -298,6 +301,7 @@
 				148991461DEA76EC00ACF4C1 /* FoaasPreviewTextTableViewCell.swift in Sources */,
 				14EB9F5E1DDAE81D00CC0D29 /* FoaasFilter.swift in Sources */,
 				14DEA7D01DE2609A007AEA56 /* FoaasProtocols.swift in Sources */,
+				14751D841DFBAC6800B93993 /* FoaasPrevewViewController.swift in Sources */,
 				14DEA7CC1DE254B8007AEA56 /* FoaasNavigationController.swift in Sources */,
 				144732221DE35599002EF07E /* FoaasField.swift in Sources */,
 				14EB9F3D1DDAE5C100CC0D29 /* FoaasViewController.swift in Sources */,

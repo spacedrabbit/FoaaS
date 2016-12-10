@@ -35,13 +35,7 @@ internal struct FoaasOperation: JSONConvertible, DataConvertible {
     
     self.name = jName
     self.url = jUrl
-    
-    var allFields: [FoaasField] = []
-    for jField in jFields {
-      guard let field = FoaasField(json: jField) else { continue }
-      allFields.append(field)
-    }
-    self.fields = allFields
+    self.fields = jFields.flatMap { FoaasField(json: $0) }
   }
   
   func toJson() -> [String : AnyObject] {
