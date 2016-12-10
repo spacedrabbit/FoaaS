@@ -99,7 +99,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="Zls-pl-r4i" kind="show" id="ykQ-9E-gdj"/>
+                                    <segue destination="Zls-pl-r4i" kind="show" identifier="FoaasPreviewSegue" id="ykQ-9E-gdj"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -188,6 +188,7 @@
                         <outlet property="bottomTextFieldConstraint" destination="kDR-2G-g32" id="eoR-46-5MB"/>
                         <outlet property="previewLabel" destination="4kL-ke-Qu1" id="hLt-Ma-lHN"/>
                         <outlet property="previewTextView" destination="DGM-hT-fKj" id="3TO-nH-4Pq"/>
+                        <outlet property="previewTextViewHeightConstraint" destination="a1y-ze-Uzd" id="feJ-sD-Bsw"/>
                         <outlet property="scrollView" destination="rvz-fL-2Wg" id="ahL-Kl-8xL"/>
                         <outlet property="scrollViewBottomConstraint" destination="AAN-jX-N28" id="YAR-cw-snD"/>
                     </connections>

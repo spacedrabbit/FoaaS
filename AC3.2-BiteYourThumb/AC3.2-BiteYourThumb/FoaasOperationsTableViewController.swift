@@ -54,13 +54,13 @@ class FoaasOperationsTableViewController: UITableViewController {
     guard
       let identifier = segue.identifier,
       identifier == "FoaasPreviewSegue",
-      segue.destination is FoaasPreviewTableViewController,
+      segue.destination is FoaasPrevewViewController,
       let senderCell = sender as? UITableViewCell,
       let cellIndex = self.tableView.indexPath(for: senderCell) else {
         return
     }
     
-    (segue.destination as! FoaasPreviewTableViewController).operation = self.operations?[cellIndex.row]
+    (segue.destination as! FoaasPrevewViewController).set(operation: (self.operations?[cellIndex.row]))
   }
   
 }

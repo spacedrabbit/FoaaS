@@ -15,13 +15,15 @@ class FoaasPrevewViewController: UIViewController {
   @IBOutlet weak var scrollView: UIScrollView!
   @IBOutlet weak var bottomTextFieldConstraint: NSLayoutConstraint!
   @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
+  @IBOutlet weak var previewTextViewHeightConstraint: NSLayoutConstraint!
   
+  internal private(set) var operation: FoaasOperation?
+  private var pathBuilder: FoaasPathBuilder?
   
   // MARK: - View Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    self.previewLabel.text = "Preview"
     self.setupViewHeirarchy()
     self.configureConstraints()
     
@@ -31,6 +33,7 @@ class FoaasPrevewViewController: UIViewController {
   
   // MARK: - View Setup
   internal func setupViewHeirarchy() {
+    self.previewLabel.text = "Preview"
     self.scrollView.alwaysBounceVertical = true
     
     nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -47,6 +50,16 @@ class FoaasPrevewViewController: UIViewController {
     self.scrollView.addSubview(wildCardLabel)
     self.scrollView.addSubview(wildCardTextField)
   }
+  
+//  override func viewDidAppear(_ animated: Bool) {
+//    super.viewDidAppear(animated)
+//    self.updateTextFieldHeight(to: 0)
+//  }
+//  
+//  override func viewDidLayoutSubviews() {
+//    super.viewDidLayoutSubviews()
+//    self.updateTextFieldHeight(to: 0)
+//  }
   
   internal func configureConstraints() {
     nameLabel.topAnchor.constraint(equalTo: previewTextView.bottomAnchor, constant: 8.0).isActive = true
@@ -68,7 +81,6 @@ class FoaasPrevewViewController: UIViewController {
     wildCardTextField.leadingAnchor.constraint(equalTo: wildCardLabel.leadingAnchor).isActive = true
     
     wildCardTextField.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: 0.0).isActive = true
-
   }
   
   
@@ -105,10 +117,72 @@ class FoaasPrevewViewController: UIViewController {
     }
   }
   
+  private func updateTextFieldHeight(animated: Bool) {
+    
+    // playing around with UITTextInput protocol that textView conforms to. this is OK but doesn't really
+    // capture the correct size of the text... seems to ignore extra lines caused by newline characters
+    let beginningTextPosition: UITextPosition = self.previewTextView.beginningOfDocument
+    let endingTextPosition: UITextPosition = self.previewTextView.endOfDocument
+    guard let textRange: UITextRange = self.previewTextView.textRange(from: beginningTextPosition, to: endingTextPosition) else {
+      return
+    }
+    
+    self.bottomTextFieldConstraint.isActive = false
+    
+    // using the firstRect is problematic as it seems to not account for scroll insets and lines broken with newline characters
+    let fullSize = self.previewTextView.firstRect(for: textRange)
+    
+    let textInsets = self.previewTextView.textContainerInset
+    
+    let usedRect = self.previewTextView.layoutManager.usedRect(for: self.previewTextView.textContainer)
+    
+    self.previewTextViewHeightConstraint.constant = usedRect.size.height + textInsets.top + textInsets.bottom
+      self.previewTextViewHeightConstraint.isActive = true
+
+    // TODO: ensure that after typing, if additional lines are added that the textfield expands to accomodate this as well
+    self.previewTextView.textContainer.heightTracksTextView = true
+
+    // animate if desired
+    UIView.animate(withDuration: 0.2, animations: {
+      self.view.layoutIfNeeded()
+    })
+  }
+  
   
   // MARK: - Actions
   @IBAction func didPressDone(_ sender: UIBarButtonItem) {
     self.dismiss(animated: true, completion: nil)
+  }
+  
+  
+  // MARK: - Other
+  internal func set(operation: FoaasOperation?) {
+    guard let validOp = operation else { return }
+    
+    self.operation = validOp
+    self.pathBuilder = FoaasPathBuilder(operation: validOp)
+    
+    self.request(operation: validOp)
+  }
+  
+  internal func request(operation: FoaasOperation) {
+    guard
+      let validPathBulder = self.pathBuilder,
+      let url = URL(string: validPathBulder.build())
+    else {
+      return
+    }
+    
+    FoaasAPIManager.getFoaas(url: url, completion: { (foaas: Foaas?) in
+      guard let validFoaas = foaas else {
+        return
+      }
+      
+      DispatchQueue.main.async {
+        self.previewTextView.text = validFoaas.message + "\n" + validFoaas.subtitle
+        self.updateTextFieldHeight(to: 0)
+      }
+    })
   }
   
   // MARK: - Lazy Loaders

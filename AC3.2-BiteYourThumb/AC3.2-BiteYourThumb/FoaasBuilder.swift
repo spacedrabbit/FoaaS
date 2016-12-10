@@ -16,6 +16,7 @@ enum FoaasBuilderError: Error {
 class FoaasPathBuilder {
   var operation: FoaasOperation!
   var operationFields: [String : String]!
+  private let baseURLString: String = "https://www.foaas.com"
   
   /**
    Flattens an array of [FoaasField] with identical keys, into a one-dimensional array of [String:String] while performing
@@ -69,7 +70,7 @@ class FoaasPathBuilder {
       return self.operationFields[component]
     }
     
-    return orderedComponents.reduce(components.first!) { (current: String, component: String) -> String in
+    return baseURLString + orderedComponents.reduce(components.first!) { (current: String, component: String) -> String in
       return "\(current)/\(component)"
     }.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlPathAllowed)!
   }
