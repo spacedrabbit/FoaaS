@@ -15,7 +15,9 @@ enum SlideDirection {
 class SlidingTextField: UIView, UITextFieldDelegate {
   internal final var textField: UITextField!
   internal final var textLabel: UILabel!
-  private final var touchIntercept: UIControl!
+  
+  let largeLabelFont = UIFont.systemFont(ofSize: 24.0)
+  let smallLabelFont = UIFont.systemFont(ofSize: 12.0)
   
   private var labelEmptyConstraint: NSLayoutConstraint!
   private var labelFilledConstraint: NSLayoutConstraint!
@@ -61,14 +63,8 @@ class SlidingTextField: UIView, UITextFieldDelegate {
     self.translatesAutoresizingMaskIntoConstraints = false
     textField.translatesAutoresizingMaskIntoConstraints = false
     textLabel.translatesAutoresizingMaskIntoConstraints = false
-    touchIntercept.translatesAutoresizingMaskIntoConstraints = false
-    
+
     self.heightAnchor.constraint(equalToConstant: 60.0).isActive = true
-    
-    touchIntercept.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-    touchIntercept.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-    touchIntercept.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-    touchIntercept.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     
     // label left/right
     textLabel.leadingAnchor.constraint(equalTo: self.textField.leadingAnchor, constant: 2.0).isActive = true
@@ -91,6 +87,7 @@ class SlidingTextField: UIView, UITextFieldDelegate {
   private func setupViewHierarchy() {
     textLabel = UILabel()
     textLabel.text = "TEXT LABEL"
+    textLabel.font = largeLabelFont
     
     textField = UITextField()
     textField.borderStyle = .none
@@ -99,13 +96,6 @@ class SlidingTextField: UIView, UITextFieldDelegate {
     textField.autocorrectionType = .no
     textField.autocapitalizationType = .words
     
-    
-    touchIntercept = UIControl()
-    touchIntercept.backgroundColor = UIColor.blue.withAlphaComponent(0.25)
-    touchIntercept.addTarget(self, action: #selector(didTapSlidingTextView(sender:)), for: .touchDown)
-    
-    // TODO: remove tounc intercept entirely
-    self.addSubview(touchIntercept)
     self.addSubview(textLabel)
     self.addSubview(textField)
     
@@ -137,29 +127,26 @@ class SlidingTextField: UIView, UITextFieldDelegate {
     slideLabel(direction: .up)
   }
   
-  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    return true
-  }
   
   // MARK: - Helpers
   private func slideLabel(direction: SlideDirection) {
+    
     switch direction {
     case .up:
       self.labelFilledConstraint.isActive = true
       self.labelEmptyConstraint.isActive = false
+      self.textLabel.font = smallLabelFont
     case .down:
       self.labelFilledConstraint.isActive = false
       self.labelEmptyConstraint.isActive = true
+      self.textLabel.font = largeLabelFont
     }
     
     UIView.animate(withDuration: 0.2, animations: {
       self.layoutIfNeeded()
     })
+
   }
 
-  // MARK: - Actions
-  @objc private func didTapSlidingTextView(sender: UIGestureRecognizer) {
-    print("did tap me")
-  }
   
 }
