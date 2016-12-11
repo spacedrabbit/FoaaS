@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FoaasPrevewViewController: UIViewController {
+class FoaasPrevewViewController: UIViewController, UITextFieldDelegate {
   
   @IBOutlet weak var previewLabel: UILabel!
   @IBOutlet weak var previewTextView: UITextView!
@@ -19,6 +19,7 @@ class FoaasPrevewViewController: UIViewController {
   
   internal private(set) var operation: FoaasOperation?
   private var pathBuilder: FoaasPathBuilder?
+  
   
   // MARK: - View Lifecycle
   override func viewDidLoad() {
@@ -36,12 +37,16 @@ class FoaasPrevewViewController: UIViewController {
     self.previewLabel.text = "Preview"
     self.scrollView.alwaysBounceVertical = true
     
-    nameLabel.translatesAutoresizingMaskIntoConstraints = false
-    nameTextField.translatesAutoresizingMaskIntoConstraints = false
-    fromLabel.translatesAutoresizingMaskIntoConstraints = false
-    fromTextField.translatesAutoresizingMaskIntoConstraints = false
-    wildCardLabel.translatesAutoresizingMaskIntoConstraints = false
-    wildCardTextField.translatesAutoresizingMaskIntoConstraints = false
+    self.nameLabel.translatesAutoresizingMaskIntoConstraints = false
+    self.nameTextField.translatesAutoresizingMaskIntoConstraints = false
+    self.fromLabel.translatesAutoresizingMaskIntoConstraints = false
+    self.fromTextField.translatesAutoresizingMaskIntoConstraints = false
+    self.wildCardLabel.translatesAutoresizingMaskIntoConstraints = false
+    self.wildCardTextField.translatesAutoresizingMaskIntoConstraints = false
+    
+    self.nameTextField.delegate = self
+    self.fromTextField.delegate = self
+    self.wildCardTextField.delegate = self
     
     self.scrollView.addSubview(nameLabel)
     self.scrollView.addSubview(nameTextField)
@@ -50,16 +55,6 @@ class FoaasPrevewViewController: UIViewController {
     self.scrollView.addSubview(wildCardLabel)
     self.scrollView.addSubview(wildCardTextField)
   }
-  
-//  override func viewDidAppear(_ animated: Bool) {
-//    super.viewDidAppear(animated)
-//    self.updateTextFieldHeight(to: 0)
-//  }
-//  
-//  override func viewDidLayoutSubviews() {
-//    super.viewDidLayoutSubviews()
-//    self.updateTextFieldHeight(to: 0)
-//  }
   
   internal func configureConstraints() {
     nameLabel.topAnchor.constraint(equalTo: previewTextView.bottomAnchor, constant: 8.0).isActive = true
@@ -118,31 +113,14 @@ class FoaasPrevewViewController: UIViewController {
   }
   
   private func updateTextFieldHeight(animated: Bool) {
-    
-    // playing around with UITTextInput protocol that textView conforms to. this is OK but doesn't really
-    // capture the correct size of the text... seems to ignore extra lines caused by newline characters
-    let beginningTextPosition: UITextPosition = self.previewTextView.beginningOfDocument
-    let endingTextPosition: UITextPosition = self.previewTextView.endOfDocument
-    guard let textRange: UITextRange = self.previewTextView.textRange(from: beginningTextPosition, to: endingTextPosition) else {
-      return
-    }
-    
-    self.bottomTextFieldConstraint.isActive = false
-    
-    // using the firstRect is problematic as it seems to not account for scroll insets and lines broken with newline characters
-    let fullSize = self.previewTextView.firstRect(for: textRange)
-    
-    let textInsets = self.previewTextView.textContainerInset
-    
+    let textContainterInsets = self.previewTextView.textContainerInset
     let usedRect = self.previewTextView.layoutManager.usedRect(for: self.previewTextView.textContainer)
     
-    self.previewTextViewHeightConstraint.constant = usedRect.size.height + textInsets.top + textInsets.bottom
-      self.previewTextViewHeightConstraint.isActive = true
-
+    self.previewTextViewHeightConstraint.constant = usedRect.size.height + textContainterInsets.top + textContainterInsets.bottom
     // TODO: ensure that after typing, if additional lines are added that the textfield expands to accomodate this as well
-    self.previewTextView.textContainer.heightTracksTextView = true
+//    self.previewTextView.textContainer.heightTracksTextView = true
 
-    // animate if desired
+    if !animated { return }
     UIView.animate(withDuration: 0.2, animations: {
       self.view.layoutIfNeeded()
     })
@@ -180,9 +158,19 @@ class FoaasPrevewViewController: UIViewController {
       
       DispatchQueue.main.async {
         self.previewTextView.text = validFoaas.message + "\n" + validFoaas.subtitle
-        self.updateTextFieldHeight(to: 0)
+        self.updateTextFieldHeight(animated: true)
       }
     })
+  }
+  
+  // MARK: - UITextField Delegate
+  func textFieldDidEndEditing(_ textField: UITextField) {
+    
+  }
+  
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    
+    return true
   }
   
   // MARK: - Lazy Loaders

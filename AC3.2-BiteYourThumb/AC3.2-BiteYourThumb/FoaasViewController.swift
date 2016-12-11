@@ -20,6 +20,13 @@ class FoaasViewController: UIViewController {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(createScreenShot))
     self.view.addGestureRecognizer(tapGesture)
     
+//    let slidingView: SlidingTextField = SlidingTextField(frame: CGRect(x: 10.0, y: 10.0, width: 200.0, height: 100.0))
+    let slidingView: SlidingTextField = SlidingTextField(placeHolderText: "Test")
+    self.view.addSubview(slidingView)
+    slidingView.widthAnchor.constraint(equalToConstant: 200.0).isActive = true
+    slidingView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20.0).isActive = true
+    slidingView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20.0).isActive = true
+    
     self.makeRequest()
   }
   
