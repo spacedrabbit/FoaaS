@@ -12,6 +12,7 @@ enum SlideDirection {
   case up, down
 }
 
+
 class SlidingTextField: UIView, UITextFieldDelegate {
   internal final var textField: UITextField!
   internal final var textLabel: UILabel!
@@ -27,8 +28,8 @@ class SlidingTextField: UIView, UITextFieldDelegate {
   override func draw(_ rect: CGRect) {
     let lineWidth: CGFloat = 2.0
     
-    let startPoint = CGPoint(x: 0.0, y: rect.height - lineWidth)
-    let endPoint = CGPoint(x: rect.width, y: rect.height - lineWidth)
+    let startPoint = CGPoint(x: 8.0, y: rect.height - lineWidth)
+    let endPoint = CGPoint(x: rect.width - 8.0, y: rect.height - lineWidth)
     
     let context = UIGraphicsGetCurrentContext()
     context?.setLineWidth(2.0)
@@ -44,6 +45,7 @@ class SlidingTextField: UIView, UITextFieldDelegate {
   convenience init(placeHolderText: String) {
     self.init(frame: CGRect.zero)
     self.backgroundColor = .clear
+    self.clipsToBounds = false
     
     self.textLabelPlaceholder = placeHolderText
     self.setupViewHierarchy()
@@ -73,7 +75,7 @@ class SlidingTextField: UIView, UITextFieldDelegate {
 //    textLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8.0).isActive = true
     
     // label empty text state
-    labelEmptyConstraint = textLabel.centerYAnchor.constraint(equalTo: self.textField.centerYAnchor, constant: 0.0)
+    labelEmptyConstraint = textLabel.centerYAnchor.constraint(equalTo: self.textField.centerYAnchor, constant: -4.0)
     labelEmptyConstraint.isActive = true
 
     // label non-empty text state
@@ -83,7 +85,7 @@ class SlidingTextField: UIView, UITextFieldDelegate {
     // textfield
     textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8.0).isActive = true
     textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -12.0).isActive = true
-    textField.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+    textField.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4.0).isActive = true
   }
   
   private func setupViewHierarchy() {
