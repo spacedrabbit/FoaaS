@@ -13,13 +13,14 @@ class FoaasPrevewViewController: UIViewController, UITextFieldDelegate {
   @IBOutlet weak var previewLabel: UILabel!
   @IBOutlet weak var previewTextView: UITextView!
   @IBOutlet weak var scrollView: UIScrollView!
+  
   @IBOutlet weak var bottomTextFieldConstraint: NSLayoutConstraint!
   @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
   @IBOutlet weak var previewTextViewHeightConstraint: NSLayoutConstraint!
   
   internal private(set) var operation: FoaasOperation?
   private var pathBuilder: FoaasPathBuilder?
-  
+  internal private(set) var slidingTextFields: [SlidingTextField] = []
   
   // MARK: - View Lifecycle
   override func viewDidLoad() {
@@ -37,45 +38,39 @@ class FoaasPrevewViewController: UIViewController, UITextFieldDelegate {
     self.previewLabel.text = "Preview"
     self.scrollView.alwaysBounceVertical = true
     
-    self.nameLabel.translatesAutoresizingMaskIntoConstraints = false
-    self.nameTextField.translatesAutoresizingMaskIntoConstraints = false
-    self.fromLabel.translatesAutoresizingMaskIntoConstraints = false
-    self.fromTextField.translatesAutoresizingMaskIntoConstraints = false
-    self.wildCardLabel.translatesAutoresizingMaskIntoConstraints = false
-    self.wildCardTextField.translatesAutoresizingMaskIntoConstraints = false
-    
-    self.nameTextField.delegate = self
-    self.fromTextField.delegate = self
-    self.wildCardTextField.delegate = self
-    
-    self.scrollView.addSubview(nameLabel)
-    self.scrollView.addSubview(nameTextField)
-    self.scrollView.addSubview(fromLabel)
-    self.scrollView.addSubview(fromTextField)
-    self.scrollView.addSubview(wildCardLabel)
-    self.scrollView.addSubview(wildCardTextField)
+    for key in self.pathBuilder!.allKeys() {
+      let newSlidingTextField = SlidingTextField(placeHolderText: key)
+      slidingTextFields.append(newSlidingTextField)
+      self.scrollView.addSubview(newSlidingTextField)
+    }
   }
   
   internal func configureConstraints() {
-    nameLabel.topAnchor.constraint(equalTo: previewTextView.bottomAnchor, constant: 8.0).isActive = true
-    nameLabel.leadingAnchor.constraint(equalTo: previewTextView.leadingAnchor).isActive = true
-    
-    nameTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8.0).isActive = true
-    nameTextField.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor).isActive = true
-    
-    fromLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 8.0).isActive = true
-    fromLabel.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor).isActive = true
-    
-    fromTextField.topAnchor.constraint(equalTo: fromLabel.bottomAnchor, constant: 8.0).isActive = true
-    fromTextField.leadingAnchor.constraint(equalTo: fromLabel.leadingAnchor).isActive = true
-    
-    wildCardLabel.topAnchor.constraint(equalTo: fromTextField.bottomAnchor, constant: 8.0).isActive = true
-    wildCardLabel.leadingAnchor.constraint(equalTo: fromTextField.leadingAnchor).isActive = true
-    
-    wildCardTextField.topAnchor.constraint(equalTo: wildCardLabel.bottomAnchor, constant: 8.0).isActive = true
-    wildCardTextField.leadingAnchor.constraint(equalTo: wildCardLabel.leadingAnchor).isActive = true
-    
-    wildCardTextField.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: 0.0).isActive = true
+
+    var priorTextField: SlidingTextField?
+    for (idx, textField) in slidingTextFields.enumerated() {
+      
+      switch idx {
+      // first view needs to be pinned to preview view
+      case 0:
+        textField.topAnchor.constraint(equalTo: previewTextView.bottomAnchor, constant: 8.0).isActive = true
+        textField.leadingAnchor.constraint(equalTo: previewTextView.leadingAnchor).isActive = true
+        textField.widthAnchor.constraint(equalTo: previewTextView.widthAnchor).isActive = true
+        
+      // last view needs to be pinned to the bottom, in addition to all of the other constraints
+      case slidingTextFields.count - 1:
+        textField.bottomAnchor.constraint(lessThanOrEqualTo: scrollView.bottomAnchor, constant: 0.0).isActive = true
+        fallthrough
+        
+      // middle views need to be pinned to prior view
+      default:
+        textField.topAnchor.constraint(equalTo: priorTextField!.bottomAnchor, constant: 8.0).isActive = true
+        textField.leadingAnchor.constraint(equalTo: priorTextField!.leadingAnchor).isActive = true
+        textField.widthAnchor.constraint(equalTo: priorTextField!.widthAnchor).isActive = true
+
+      }
+      priorTextField = textField
+    }
   }
   
   
@@ -172,47 +167,4 @@ class FoaasPrevewViewController: UIViewController, UITextFieldDelegate {
     
     return true
   }
-  
-  // MARK: - Lazy Loaders
-  internal lazy var nameLabel: UILabel = {
-    let label = UILabel()
-    label.text = "Name"
-    label.font = UIFont.systemFont(ofSize: 18.0)
-    return label
-  }()
-  
-  internal lazy var nameTextField: UITextField = {
-    let textField: UITextField = UITextField()
-    textField.placeholder = "name"
-    textField.borderStyle = .bezel
-    return textField
-  }()
-  
-  internal lazy var fromLabel: UILabel = {
-    let label = UILabel()
-    label.text = "Frome"
-    label.font = UIFont.systemFont(ofSize: 18.0)
-    return label
-  }()
-  
-  internal lazy var fromTextField: UITextField = {
-    let textField: UITextField = UITextField()
-    textField.placeholder = "from"
-    textField.borderStyle = .bezel
-    return textField
-  }()
-  
-  internal lazy var wildCardLabel: UILabel = {
-    let label = UILabel()
-    label.text = "Reference"
-    label.font = UIFont.systemFont(ofSize: 18.0)
-    return label
-  }()
-  
-  internal lazy var wildCardTextField: UITextField = {
-    let textField: UITextField = UITextField()
-    textField.placeholder = "reference"
-    textField.borderStyle = .bezel
-    return textField
-  }()
 }

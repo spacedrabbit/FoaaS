@@ -15,6 +15,7 @@ enum SlideDirection {
 class SlidingTextField: UIView, UITextFieldDelegate {
   internal final var textField: UITextField!
   internal final var textLabel: UILabel!
+  private var textLabelPlaceholder: String!
   
   let largeLabelFont = UIFont.systemFont(ofSize: 24.0)
   let smallLabelFont = UIFont.systemFont(ofSize: 12.0)
@@ -44,6 +45,7 @@ class SlidingTextField: UIView, UITextFieldDelegate {
     self.init(frame: CGRect.zero)
     self.backgroundColor = .clear
     
+    self.textLabelPlaceholder = placeHolderText
     self.setupViewHierarchy()
     self.configureConstraints()
     
@@ -68,7 +70,7 @@ class SlidingTextField: UIView, UITextFieldDelegate {
     
     // label left/right
     textLabel.leadingAnchor.constraint(equalTo: self.textField.leadingAnchor, constant: 2.0).isActive = true
-    textLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8.0).isActive = true
+//    textLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8.0).isActive = true
     
     // label empty text state
     labelEmptyConstraint = textLabel.centerYAnchor.constraint(equalTo: self.textField.centerYAnchor, constant: 0.0)
@@ -86,8 +88,9 @@ class SlidingTextField: UIView, UITextFieldDelegate {
   
   private func setupViewHierarchy() {
     textLabel = UILabel()
-    textLabel.text = "TEXT LABEL"
+    textLabel.text = textLabelPlaceholder
     textLabel.font = largeLabelFont
+    textLabel.textAlignment = .left
     
     textField = UITextField()
     textField.borderStyle = .none
@@ -136,12 +139,14 @@ class SlidingTextField: UIView, UITextFieldDelegate {
       self.labelFilledConstraint.isActive = true
       self.labelEmptyConstraint.isActive = false
       self.textLabel.font = smallLabelFont
+      
     case .down:
       self.labelFilledConstraint.isActive = false
       self.labelEmptyConstraint.isActive = true
       self.textLabel.font = largeLabelFont
     }
-    
+
+    self.setNeedsUpdateConstraints()
     UIView.animate(withDuration: 0.2, animations: {
       self.layoutIfNeeded()
     })
