@@ -8,6 +8,134 @@
 
 import UIKit
 
+// TODO: Build out setting view
+class FoaasSettingsView: UIView {
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    
+    self.setupViewHierarchy()
+    self.configureConstraints()
+  }
+  
+  internal func setupViewHierarchy() {
+    self.backgroundColor = .white
+    
+    self.addSubview(colorPaletteLabel)
+    self.addSubview(profinityFilterLabel)
+    
+    self.addSubview(profanitySwitch)
+    self.addSubview(onLabel)
+    self.addSubview(offLabel)
+    
+    self.addSubview(authorInfoLabel)
+    self.addSubview(versionNumberLabel)
+    
+    self.translatesAutoresizingMaskIntoConstraints = false
+    colorPaletteLabel.translatesAutoresizingMaskIntoConstraints = false
+    profinityFilterLabel.translatesAutoresizingMaskIntoConstraints = false
+    profanitySwitch.translatesAutoresizingMaskIntoConstraints = false
+    onLabel.translatesAutoresizingMaskIntoConstraints = false
+    offLabel.translatesAutoresizingMaskIntoConstraints = false
+    authorInfoLabel.translatesAutoresizingMaskIntoConstraints = false
+    versionNumberLabel.translatesAutoresizingMaskIntoConstraints = false
+  }
+  
+  internal func configureConstraints() {
+    
+    let colorPaletteLabelConstraints = [
+      colorPaletteLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 16.0),
+      colorPaletteLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16.0),
+      ]
+    
+    let profanityLabelConstraints = [
+      profinityFilterLabel.topAnchor.constraint(equalTo: colorPaletteLabel.bottomAnchor, constant: 8.0),
+      profinityFilterLabel.leadingAnchor.constraint(equalTo: colorPaletteLabel.leadingAnchor)
+    ]
+    
+    let authorLabelConstraints = [
+      authorInfoLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16.0),
+      authorInfoLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+    ]
+    
+    let versionInfoConstraints = [
+      versionNumberLabel.bottomAnchor.constraint(equalTo: authorInfoLabel.topAnchor, constant: -8.0),
+      versionNumberLabel.centerXAnchor.constraint(equalTo: authorInfoLabel.centerXAnchor),
+      
+      // TODO: remove this spacing constraint
+      versionNumberLabel.topAnchor.constraint(equalTo: profinityFilterLabel.bottomAnchor, constant: 64.0),
+      ]
+    
+    let _ = [colorPaletteLabelConstraints,
+             profanityLabelConstraints,
+             authorLabelConstraints,
+             versionInfoConstraints].map{ $0.map{ $0.isActive = true } }
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+  }
+  
+  internal lazy var colorPaletteLabel: UILabel = {
+    let label: UILabel = UILabel()
+    label.text = "COLOR PALETTE"
+    label.textAlignment = .left
+    label.font = UIFont.systemFont(ofSize: 18.0, weight: UIFontWeightLight)
+    return label
+  }()
+  
+  internal lazy var profinityFilterLabel: UILabel = {
+    let label: UILabel = UILabel()
+    label.text = "PROFANITY"
+    label.textAlignment = .left
+    label.font = UIFont.systemFont(ofSize: 18.0, weight: UIFontWeightLight)
+    return label
+  }()
+  
+  internal lazy var onLabel: UILabel = {
+    let label: UILabel = UILabel()
+    label.text = "ON"
+    label.textAlignment = .left
+    label.textColor = .gray
+    label.font = UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightLight)
+    return label
+  }()
+  
+  internal lazy var offLabel: UILabel = {
+    let label: UILabel = UILabel()
+    label.text = "OFF"
+    label.textAlignment = .left
+    label.textColor = .gray
+    label.font = UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightLight)
+    return label
+  }()
+  
+  internal lazy var profanitySwitch: UISwitch = {
+    let profanitySwitch: UISwitch = UISwitch()
+    // TODO: make tint color based on color manager settings
+    // TODO: set isON based on settings manager
+    return profanitySwitch
+  }()
+  
+  internal lazy var versionNumberLabel: UILabel = {
+    let label: UILabel = UILabel()
+    label.text = "V 0.1.0"
+    label.textAlignment = .left
+    label.font = UIFont.systemFont(ofSize: 18.0, weight: UIFontWeightLight)
+    label.textColor = .gray
+    return label
+  }()
+  
+  internal lazy var authorInfoLabel: UILabel = {
+    let label: UILabel = UILabel()
+    label.text = "MADE WITH ❤️ LOUIS.TUR@GMAIL.COM"
+    label.textAlignment = .left
+    label.font = UIFont.systemFont(ofSize: 18.0, weight: UIFontWeightLight)
+    label.textColor = .gray
+    return label
+  }()
+}
+
 class FoaasView: UIView {
   
   // MARK: - Setup
@@ -42,11 +170,7 @@ class FoaasView: UIView {
     let fieldConstraints = [
       textField.leadingAnchor.constraint(equalTo: resizingView.leadingAnchor),
       textField.topAnchor.constraint(equalTo: resizingView.topAnchor),
-      textField.trailingAnchor.constraint(equalTo: resizingView.trailingAnchor),
-      textField.widthAnchor.constraint(equalToConstant: 375.0),
-      textField.bottomAnchor.constraint(equalTo: resizingView.bottomAnchor),
-      textField.heightAnchor.constraint(equalTo: resizingView.heightAnchor),
-    ]
+      ]
     
     let buttonConstraints = [
       addButton.widthAnchor.constraint(equalToConstant: 54.0),
@@ -54,7 +178,7 @@ class FoaasView: UIView {
       addButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -48.0),
       addButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -48.0)
     ]
-
+    
     let _ = [resizingViewConstraints, fieldConstraints, buttonConstraints].map{ $0.map{ $0.isActive = true } }
   }
   
@@ -95,15 +219,16 @@ class FoaasView: UIView {
 
 class FoaasViewController: UIViewController {
   
-//  @IBOutlet weak var foaasLabel: UILabel!
-//  @IBOutlet weak var foaasMessageScrollView: UIScrollView!
-  
   // TODO: replace IB w/ programmatic
   let foaasView: FoaasView = FoaasView(frame: CGRect.zero)
+  let foaasSettingsView: FoaasSettingsView = FoaasSettingsView(frame: CGRect.zero)
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.view.backgroundColor = .white
     
+    // TODO: move to proper function
+    self.view.addSubview(foaasSettingsView)
     self.view.addSubview(foaasView)
     let _ = [
       foaasView.topAnchor.constraint(equalTo: self.view.topAnchor),
@@ -112,15 +237,59 @@ class FoaasViewController: UIViewController {
       foaasView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
       ].map{ $0.isActive = true }
     
+    let _ = [
+      foaasSettingsView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+      foaasSettingsView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+      foaasSettingsView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      ].map{ $0.isActive = true }
+    
+    self.foaasView.addButton.addTarget(self, action: #selector(didTapAddButton(_:)), for: .touchDown)
+    
+    let swipeUpGesture = UISwipeGestureRecognizer(target: self, action: #selector(toggleMenu(sender:)))
+    swipeUpGesture.direction = .up
+    foaasView.addGestureRecognizer(swipeUpGesture)
+    
+    let swipeDownGesture = UISwipeGestureRecognizer(target: self, action: #selector(toggleMenu(sender:)))
+    swipeDownGesture.direction = .down
+    foaasView.addGestureRecognizer(swipeDownGesture)
+    
     // TODO: re-add tap gesture
-//    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(createScreenShot))
-//    self.view.addGestureRecognizer(tapGesture)
+    //    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(createScreenShot))
+    //    self.view.addGestureRecognizer(tapGesture)
     
     self.makeRequest()
   }
   
-  override func viewDidLayoutSubviews() {
+  internal func toggleMenu(sender: UISwipeGestureRecognizer) {
+    print("Toggle")
     
+    switch sender.direction {
+    case UISwipeGestureRecognizerDirection.up:
+      showMenu()
+    case UISwipeGestureRecognizerDirection.down: print("DOWN")
+      hideMenu()
+    default:
+      print("Not interested")
+    }
+    
+  }
+  
+  internal func showMenu() {
+    let originalFrame = self.foaasView.frame
+    let newFrame = originalFrame.offsetBy(dx: 0.0, dy: -self.foaasSettingsView.frame.size.height)
+    
+    UIView.animate(withDuration: 0.35, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.6, options: [], animations: {
+      self.foaasView.frame = newFrame
+    }, completion: nil)
+  }
+  
+  internal func hideMenu() {
+    let originalFrame = self.foaasView.frame
+    let newFrame = originalFrame.offsetBy(dx: 0.0, dy: self.foaasSettingsView.frame.size.height)
+    
+    UIView.animate(withDuration: 0.1) {
+      self.foaasView.frame = newFrame
+    }
   }
   
   internal func createScreenShot() {
@@ -132,8 +301,8 @@ class FoaasViewController: UIViewController {
     UIImageWriteToSavedPhotosAlbum(image!, self, #selector(createScreenShotCompletion(image:didFinishSavingWithError:contextInfo:)), nil)
   }
   
-  @IBAction func didTapOctoButton(_ sender: UIButton) {
-    let newTransform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+  @IBAction func didTapAddButton(_ sender: UIButton) {
+    let newTransform = CGAffineTransform(scaleX: 1.1, y: 1.1)
     let originalTransform = sender.imageView!.transform
     
     UIView.animate(withDuration: 0.1, animations: {
@@ -176,13 +345,13 @@ class FoaasViewController: UIViewController {
     FoaasAPIManager.getFoaas { (foaas: Foaas?) in
       
       if foaas != nil {
-//        self.foaasLabel.alpha = 0.0
+        //        self.foaasLabel.alpha = 0.0
         
         DispatchQueue.main.async {
           self.foaasView.textField.text = foaas!.description.lowercased()
           
           UIView.animate(withDuration: 0.25, animations: {
-//            self.foaasLabel.alpha = 1.0
+            //            self.foaasLabel.alpha = 1.0
           })
         }
       }
