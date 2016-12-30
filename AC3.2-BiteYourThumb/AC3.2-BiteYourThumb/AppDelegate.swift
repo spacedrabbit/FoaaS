@@ -16,6 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
+    let navController = FoaasNavigationController(rootViewController: FoaasViewController())
+    self.window = UIWindow(frame: UIScreen.main.bounds)
+    self.window?.rootViewController = navController
+    self.window?.makeKeyAndVisible()
+    
     FoaasDataManager.shared.requestOperations { (operations: [FoaasOperation]?) in
       if operations != nil {
         print("Loaded operations")

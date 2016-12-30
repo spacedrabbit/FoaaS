@@ -8,26 +8,119 @@
 
 import UIKit
 
-class FoaasViewController: UIViewController {
-
-  @IBOutlet weak var foaasLabel: UILabel!
-  @IBOutlet weak var foaasMessageScrollView: UIScrollView!
+class FoaasView: UIView {
   
+  // MARK: - Setup
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    
+    self.setupViewHierarchy()
+    self.configureConstraints()
+  }
+  
+  internal func setupViewHierarchy() {
+    self.addSubview(resizingView)
+    self.addSubview(addButton)
+    self.resizingView.addSubview(textField)
+    
+    self.translatesAutoresizingMaskIntoConstraints = false
+    self.resizingView.translatesAutoresizingMaskIntoConstraints = false
+    self.textField.translatesAutoresizingMaskIntoConstraints = false
+    self.addButton.translatesAutoresizingMaskIntoConstraints = false
+    
+    self.backgroundColor = .yellow
+  }
+  
+  internal func configureConstraints() {
+    let resizingViewConstraints = [
+      resizingView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+      resizingView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+      resizingView.topAnchor.constraint(equalTo: self.topAnchor),
+      resizingView.bottomAnchor.constraint(equalTo: addButton.topAnchor, constant: -48.0)
+    ]
+    
+    let fieldConstraints = [
+      textField.leadingAnchor.constraint(equalTo: resizingView.leadingAnchor),
+      textField.topAnchor.constraint(equalTo: resizingView.topAnchor),
+      textField.trailingAnchor.constraint(equalTo: resizingView.trailingAnchor),
+      textField.widthAnchor.constraint(equalToConstant: 375.0),
+      textField.bottomAnchor.constraint(equalTo: resizingView.bottomAnchor),
+      textField.heightAnchor.constraint(equalTo: resizingView.heightAnchor),
+    ]
+    
+    let buttonConstraints = [
+      addButton.widthAnchor.constraint(equalToConstant: 54.0),
+      addButton.heightAnchor.constraint(equalToConstant: 54.0),
+      addButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -48.0),
+      addButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -48.0)
+    ]
+
+    let _ = [resizingViewConstraints, fieldConstraints, buttonConstraints].map{ $0.map{ $0.isActive = true } }
+  }
+  
+  override func layoutSubviews() {
+    // TOOD: adjust sizing
+    self.configureConstraints()
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    
+  }
+  
+  // MARK: - Lazy Inits
+  internal lazy var resizingView: UIView = {
+    let view: UIView = UIView()
+    view.backgroundColor = .red
+    return view
+  }()
+  
+  // TODO: fix this stupid ass textfield
+  internal lazy var textField: UITextField = {
+    let textField = UITextField(frame: CGRect.zero)
+    textField.font = UIFont.systemFont(ofSize: 64.0)
+    textField.textColor = .black
+    textField.textAlignment = .left
+    textField.isUserInteractionEnabled = false
+    textField.text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."
+    return textField
+  }()
+  
+  internal lazy var addButton: UIButton = {
+    let button: UIButton = UIButton(type: .custom)
+    button.setBackgroundImage(UIImage(named: "add_button")!, for: .normal)
+    return button
+  }()
+}
+
+class FoaasViewController: UIViewController {
+  
+//  @IBOutlet weak var foaasLabel: UILabel!
+//  @IBOutlet weak var foaasMessageScrollView: UIScrollView!
+  
+  // TODO: replace IB w/ programmatic
+  let foaasView: FoaasView = FoaasView(frame: CGRect.zero)
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(createScreenShot))
-    self.view.addGestureRecognizer(tapGesture)
+    self.view.addSubview(foaasView)
+    let _ = [
+      foaasView.topAnchor.constraint(equalTo: self.view.topAnchor),
+      foaasView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      foaasView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+      foaasView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+      ].map{ $0.isActive = true }
     
-//    let slidingView: SlidingTextField = SlidingTextField(frame: CGRect(x: 10.0, y: 10.0, width: 200.0, height: 100.0))
-    let slidingView: SlidingTextField = SlidingTextField(placeHolderText: "Test")
-    self.view.addSubview(slidingView)
-    slidingView.widthAnchor.constraint(equalToConstant: 200.0).isActive = true
-    slidingView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 20.0).isActive = true
-    slidingView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20.0).isActive = true
+    // TODO: re-add tap gesture
+//    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(createScreenShot))
+//    self.view.addGestureRecognizer(tapGesture)
     
     self.makeRequest()
+  }
+  
+  override func viewDidLayoutSubviews() {
+    
   }
   
   internal func createScreenShot() {
@@ -76,51 +169,20 @@ class FoaasViewController: UIViewController {
   }
   
   internal func updateFoaas(sender: Any) {
-    
+    // TODO
   }
   
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-//    self.checkBoundingRect()
-  }
-
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-  }
-  
-  
-  // TODO: this isn't functioning as I want. Will need re-visiting in a later sprint.
-  internal func checkBoundingRect() {
-    let screenBounds = UIScreen.main.bounds
-    self.foaasLabel.sizeToFit()
-
-    let labelLayerBounds = self.foaasLabel.layer.bounds
-    
-    let rect = self.foaasLabel.attributedText?.boundingRect(with: CGSize(width: screenBounds.width - 32, height: screenBounds.height), options: .usesLineFragmentOrigin, context: nil)
-    
-    if Float(labelLayerBounds.size.height) > roundf(Float(rect!.size.height)){
-      let fontSize = self.foaasLabel.font.pointSize
-      let lineSize = self.foaasLabel.font.lineHeight
-      let fontScaleDiff = (lineSize - fontSize) / fontSize
-      let sizeScaleDiff = screenBounds.size.height / labelLayerBounds.size.height
-      
-      
-      self.foaasLabel.font = self.foaasLabel.font.withSize((fontSize * (1 - CGFloat(fontScaleDiff))) * (1 - sizeScaleDiff))
-    }
-    
-    self.foaasLabel.frame.size = rect!.size
-  }
-
   internal func makeRequest() {
     FoaasAPIManager.getFoaas { (foaas: Foaas?) in
       
       if foaas != nil {
-        self.foaasLabel.alpha = 0.0
+//        self.foaasLabel.alpha = 0.0
         
         DispatchQueue.main.async {
-          self.foaasLabel.text = foaas!.description.lowercased()
+          self.foaasView.textField.text = foaas!.description.lowercased()
+          
           UIView.animate(withDuration: 0.25, animations: {
-              self.foaasLabel.alpha = 1.0
+//            self.foaasLabel.alpha = 1.0
           })
         }
       }
