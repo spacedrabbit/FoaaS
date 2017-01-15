@@ -21,8 +21,10 @@ class FoaasOperationsTableViewController: UITableViewController {
     self.tableView.estimatedRowHeight = 64.0
     self.tableView.register(FoaasOperationsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
     
+    // TODO: make better use of this nav subclass or remove it entirely 
     if let foaasNavVC = self.navigationController as? FoaasNavigationController {
       foaasNavVC.adjustRightBar(to: .done)
+      foaasNavVC.isNavigationBarHidden = true 
     }
   }
 
@@ -46,6 +48,18 @@ class FoaasOperationsTableViewController: UITableViewController {
     operationCell.operationNameLabel.text = operations?[indexPath.row].name
 
     return operationCell
+  }
+  
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    
+    guard
+      let selectedOperation = operations?[indexPath.row],
+      let navVC = self.navigationController
+    else { return }
+    
+    let dtvc = FoaasPrevewViewController()
+    dtvc.set(operation: selectedOperation)
+    navVC.pushViewController(dtvc, animated: true)
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
