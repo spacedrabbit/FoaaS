@@ -8,6 +8,46 @@
 
 import UIKit
 
+class FoaasOperationsTableViewCell: UITableViewCell {
+  
+  override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+    
+    setupViewHierarchy()
+    configureConstraints()
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+  }
+  
+  
+  // MARK: - Setup
+  private func configureConstraints() {
+    let _ = [ operationNameLabel ].map{ $0.translatesAutoresizingMaskIntoConstraints = false }
+    
+    var _ = [
+      self.contentView.heightAnchor.constraint(equalToConstant: 64.0),
+      self.operationNameLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16.0),
+      self.operationNameLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+    ].map{ $0.isActive = true }
+  }
+  
+  private func setupViewHierarchy() {
+    self.contentView.addSubview(operationNameLabel)
+  }
+  
+  
+  // MARK: Lazy Inits
+  internal lazy var operationNameLabel: UILabel = {
+    let label: UILabel = UILabel()
+    label.textColor = .black
+    label.font = UIFont.systemFont(ofSize: 28.0)
+    return label
+  }()
+  
+}
+
 class FoaasOperationsTableViewController: UITableViewController {
   
   let operations = FoaasDataManager.shared.operations
@@ -17,21 +57,15 @@ class FoaasOperationsTableViewController: UITableViewController {
     super.viewDidLoad()
     
     self.title = "Operations"
+    self.tableView.rowHeight = UITableViewAutomaticDimension
+    self.tableView.estimatedRowHeight = 64.0
+    self.tableView.register(FoaasOperationsTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
     
     if let foaasNavVC = self.navigationController as? FoaasNavigationController {
       foaasNavVC.adjustRightBar(to: .done)
     }
   }
-  
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-  }
-  
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-  
+
   // MARK: - Table view data source
   
   override func numberOfSections(in tableView: UITableView) -> Int {
@@ -45,9 +79,13 @@ class FoaasOperationsTableViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-    cell.textLabel?.text = operations?[indexPath.row].name
     
-    return cell
+    guard let operationCell = cell as? FoaasOperationsTableViewCell else {
+      cell.textLabel?.text = "INVALID"
+      return cell }
+    operationCell.operationNameLabel.text = operations?[indexPath.row].name
+
+    return operationCell
   }
   
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
