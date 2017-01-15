@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		140452B21E2B385B003E13E2 /* FoaasOperationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140452B11E2B385B003E13E2 /* FoaasOperationsTableViewCell.swift */; };
 		144732221DE35599002EF07E /* FoaasField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144732211DE35599002EF07E /* FoaasField.swift */; };
 		14751D841DFBAC6800B93993 /* FoaasPrevewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14751D831DFBAC6800B93993 /* FoaasPrevewViewController.swift */; };
 		14751D861DFC83FF00B93993 /* FoaasOperationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14751D851DFC83FF00B93993 /* FoaasOperationsTableViewController.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		140452B11E2B385B003E13E2 /* FoaasOperationsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FoaasOperationsTableViewCell.swift; path = Views/FoaasOperationsTableViewCell.swift; sourceTree = "<group>"; };
 		144732211DE35599002EF07E /* FoaasField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoaasField.swift; sourceTree = "<group>"; };
 		14751D831DFBAC6800B93993 /* FoaasPrevewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoaasPrevewViewController.swift; sourceTree = "<group>"; };
 		14751D851DFC83FF00B93993 /* FoaasOperationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoaasOperationsTableViewController.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				14751D871DFDDA1200B93993 /* SlidingTextField.swift */,
 				14D9F7C91E2B2B65003EC24B /* FoaasSettingsView.swift */,
 				14D9F7CB1E2B2BA7003EC24B /* FoaasView.swift */,
+				140452B11E2B385B003E13E2 /* FoaasOperationsTableViewCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -292,6 +295,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				140452B21E2B385B003E13E2 /* FoaasOperationsTableViewCell.swift in Sources */,
 				14DEA7CE1DE255EC007AEA56 /* FoaasDataManager.swift in Sources */,
 				14751D861DFC83FF00B93993 /* FoaasOperationsTableViewController.swift in Sources */,
 				14EB9F5E1DDAE81D00CC0D29 /* FoaasFilter.swift in Sources */,
