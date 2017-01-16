@@ -26,13 +26,9 @@ class FoaasView: UIView {
   internal func setupViewHierarchy() {
     self.addSubview(resizingView)
     self.addSubview(addButton)
-    self.resizingView.addSubview(textField)
+    resizingView.addSubview(textField)
     
-    self.translatesAutoresizingMaskIntoConstraints = false
-    self.resizingView.translatesAutoresizingMaskIntoConstraints = false
-    self.textField.translatesAutoresizingMaskIntoConstraints = false
-    self.addButton.translatesAutoresizingMaskIntoConstraints = false
-    
+    stripAutoResizingMasks(self, resizingView, textField, addButton)
     self.backgroundColor = .yellow
     
     self.addButton.addTarget(self, action: #selector(didTapButton(sender:)), for: .touchDown)

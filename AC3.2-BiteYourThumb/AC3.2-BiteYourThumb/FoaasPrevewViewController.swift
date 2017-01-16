@@ -8,11 +8,61 @@
 
 import UIKit
 
+class FoaasPreviewView: UIView {
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    
+    setupViewHierarchy()
+    configureConstraints()
+    
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+  }
+  
+  
+  // MARK: - Config
+  private func configureConstraints() {
+    stripAutoResizingMasks(previewTextView, previewLabel)
+    
+    
+  }
+  
+  private func setupViewHierarchy() {
+    self.addSubview(scrollView)
+    scrollView.addSubview(previewLabel)
+    scrollView.addSubview(previewTextView)
+  }
+  
+  
+  // MARK: - Lazy Inits
+  internal lazy var previewLabel: UILabel = {
+    let label: UILabel = UILabel()
+    
+    return label
+  }()
+  
+  internal lazy var previewTextView: UITextView = {
+    let textView: UITextView = UITextView()
+    
+    return textView
+  }()
+  
+  internal lazy var scrollView: UIScrollView = {
+    let scroll: UIScrollView = UIScrollView()
+    scroll.keyboardDismissMode = .onDrag
+    return scroll
+  }()
+  
+}
+
 class FoaasPrevewViewController: UIViewController, UITextFieldDelegate {
   
-  @IBOutlet weak var previewLabel: UILabel!
-  @IBOutlet weak var previewTextView: UITextView!
-  @IBOutlet weak var scrollView: UIScrollView!
+//  @IBOutlet weak var previewLabel: UILabel!
+//  @IBOutlet weak var previewTextView: UITextView!
+//  @IBOutlet weak var scrollView: UIScrollView!
   
   @IBOutlet weak var bottomTextFieldConstraint: NSLayoutConstraint!
   @IBOutlet weak var scrollViewBottomConstraint: NSLayoutConstraint!
@@ -38,6 +88,10 @@ class FoaasPrevewViewController: UIViewController, UITextFieldDelegate {
     self.previewLabel.text = "Preview"
     self.scrollView.alwaysBounceVertical = true
     
+    self.view.addSubview(scrollView)
+    self.scrollView.addSubview(previewLabel)
+    self.scrollView.addSubview(previewTextView)
+    
     for key in self.pathBuilder!.allKeys() {
       let newSlidingTextField = SlidingTextField(placeHolderText: key)
       slidingTextFields.append(newSlidingTextField)
@@ -46,7 +100,9 @@ class FoaasPrevewViewController: UIViewController, UITextFieldDelegate {
   }
   
   internal func configureConstraints() {
-
+    
+    // TODO: configure programmatic constraints for scroll view, label and text field 
+    
     var priorTextField: SlidingTextField?
     for (idx, textField) in slidingTextFields.enumerated() {
       
@@ -67,7 +123,7 @@ class FoaasPrevewViewController: UIViewController, UITextFieldDelegate {
         textField.topAnchor.constraint(equalTo: priorTextField!.bottomAnchor, constant: 8.0).isActive = true
         textField.leadingAnchor.constraint(equalTo: priorTextField!.leadingAnchor).isActive = true
         textField.widthAnchor.constraint(equalTo: priorTextField!.widthAnchor).isActive = true
-
+        
       }
       priorTextField = textField
     }
@@ -113,8 +169,8 @@ class FoaasPrevewViewController: UIViewController, UITextFieldDelegate {
     
     self.previewTextViewHeightConstraint.constant = usedRect.size.height + textContainterInsets.top + textContainterInsets.bottom
     // TODO: ensure that after typing, if additional lines are added that the textfield expands to accomodate this as well
-//    self.previewTextView.textContainer.heightTracksTextView = true
-
+    //    self.previewTextView.textContainer.heightTracksTextView = true
+    
     if !animated { return }
     UIView.animate(withDuration: 0.2, animations: {
       self.view.layoutIfNeeded()
@@ -142,8 +198,8 @@ class FoaasPrevewViewController: UIViewController, UITextFieldDelegate {
     guard
       let validPathBulder = self.pathBuilder,
       let url = URL(string: validPathBulder.build())
-    else {
-      return
+      else {
+        return
     }
     
     FoaasAPIManager.getFoaas(url: url, completion: { (foaas: Foaas?) in
@@ -167,4 +223,23 @@ class FoaasPrevewViewController: UIViewController, UITextFieldDelegate {
     
     return true
   }
+  
+  // MARK: - Lazy Inits
+  internal lazy var previewLabel: UILabel = {
+    let label: UILabel = UILabel()
+    label.text = "Preview:"
+    label.font = UIFont.systemFont(ofSize: 18.0)
+    return label
+  }()
+  
+  internal lazy var previewTextView: UITextView = {
+    let textView: UITextView = UITextView()
+    return textView
+  }()
+  
+  internal lazy var scrollView: UIScrollView = {
+    let scroll: UIScrollView = UIScrollView()
+    scroll.keyboardDismissMode = .onDrag
+    return scroll
+  }()
 }

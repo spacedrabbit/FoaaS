@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol JSONConvertible {
   init?(json: [String : AnyObject])
@@ -16,4 +17,24 @@ protocol JSONConvertible {
 protocol DataConvertible {
   init?(data: Data)
   func toData() throws -> Data
+}
+
+func stripAutoResizingMasks(_ views: [UIView]) {
+  let _ = views.map{ $0.translatesAutoresizingMaskIntoConstraints = false }
+}
+
+func stripAutoResizingMasks(_ views: UIView...) {
+  stripAutoResizingMasks(views)
+}
+
+extension Array where Element: NSLayoutConstraint {
+  func activate() {
+    let _ = self.map{ $0.isActive = true}
+  }
+}
+
+extension UIView {
+  func addSubviews(_ views: [UIView]) {
+    views.forEach{ self.addSubview($0) }
+  }
 }

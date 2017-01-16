@@ -19,28 +19,18 @@ class FoaasSettingsView: UIView {
   
   internal func setupViewHierarchy() {
     self.backgroundColor = .white
-    
-    self.addSubview(colorPaletteLabel)
-    self.addSubview(profinityFilterLabel)
-    
-    self.addSubview(profanitySwitch)
-    self.addSubview(onLabel)
-    self.addSubview(offLabel)
-    
-    self.addSubview(authorInfoLabel)
-    self.addSubview(versionNumberLabel)
+    self.addSubviews( [colorPaletteLabel,
+                       profinityFilterLabel,
+                       profanitySwitch,
+                       onLabel,
+                       offLabel,
+                       authorInfoLabel,
+                       versionNumberLabel] )
   }
   
   internal func configureConstraints() {
-    let _ = [ self,
-              colorPaletteLabel,
-              profinityFilterLabel,
-              profanitySwitch,
-              onLabel,
-              offLabel,
-              authorInfoLabel,
-              versionNumberLabel,
-      ].map{ $0.translatesAutoresizingMaskIntoConstraints = false }
+    stripAutoResizingMasks(self, colorPaletteLabel, profinityFilterLabel,
+                           profanitySwitch, onLabel, offLabel, authorInfoLabel, versionNumberLabel)
     
     let _ = [
       // colorPaletteLabelConstraints
